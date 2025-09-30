@@ -1,0 +1,23 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://dscrloandownpayment.com/sitemap.xml
+
+# Important SEO pages
+Allow: /
+Allow: /#quick-answer
+Allow: /#factors
+Allow: /#estimator
+Allow: /#faqs
+Allow: /#states
+Allow: /#property-types
+
+# Block any potential dev/admin paths
+Disallow: /admin/
+Disallow: /dev/
+Disallow: /.env
+Disallow: /node_modules/
+
+# Crawl-delay (optional - remove if not needed)
+# Crawl-delay: 1

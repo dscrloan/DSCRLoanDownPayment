@@ -2,25 +2,10 @@ import { Button } from "./components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
 import { Separator } from "./components/ui/separator";
 import { SitemapPage } from "./components/SitemapPage";
-import { PureSitemapXML } from "./components/PureSitemapXML";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function App() {
   const [showSitemap, setShowSitemap] = useState(false);
-  const [currentPath, setCurrentPath] = useState('');
-
-  useEffect(() => {
-    // Get current path on mount
-    setCurrentPath(window.location.pathname);
-
-    // Listen for navigation changes
-    const handlePopState = () => {
-      setCurrentPath(window.location.pathname);
-    };
-
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
-  }, []);
 
   // Generate and download XML sitemap
   const downloadSitemap = () => {
@@ -82,11 +67,6 @@ export default function App() {
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
   };
-
-  // Handle XML sitemap route - PURE XML for Google Search Console
-  if (currentPath === '/sitemap.xml' || window.location.pathname === '/sitemap.xml') {
-    return <PureSitemapXML />;
-  }
 
   // Show sitemap page if requested
   if (showSitemap) {
