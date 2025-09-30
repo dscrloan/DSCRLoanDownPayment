@@ -1,8 +1,12 @@
 import { Button } from "./components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
 import { Separator } from "./components/ui/separator";
+import { SitemapPage } from "./components/SitemapPage";
+import { useState } from "react";
 
 export default function App() {
+  const [showSitemap, setShowSitemap] = useState(false);
+
   // Generate and download XML sitemap
   const downloadSitemap = () => {
     const currentDate = new Date().toISOString().split('T')[0];
@@ -63,6 +67,11 @@ export default function App() {
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
   };
+
+  // Show sitemap page if requested
+  if (showSitemap) {
+    return <SitemapPage />;
+  }
 
   return (
     <>
@@ -147,7 +156,15 @@ export default function App() {
             "@type": "WebSite",
             "name": "DSCR Loan Down Payment Guide",
             "description": "Educational resource helping real estate investors understand DSCR loan down payment requirements and financing options",
-            "url": "https://dscrloandownpayment.com"
+            "url": "https://dscrloandownpayment.com",
+            "hasPart": [
+              {
+                "@type": "WebPage",
+                "name": "Site Map",
+                "description": "Complete navigation structure for DSCR loan down payment educational resource",
+                "url": "https://dscrloandownpayment.com/sitemap"
+              }
+            ]
           })}
         </script>
       </head>
@@ -741,6 +758,9 @@ export default function App() {
                   All DSCR topics → shopdscrloans.com
                 </a>
               </Button>
+              <Button variant="outline" onClick={() => setShowSitemap(true)} aria-label="View site map page">
+                View Site Map
+              </Button>
               <Button variant="outline" onClick={downloadSitemap} aria-label="Download XML sitemap for SEO">
                 Download Sitemap.xml
               </Button>
@@ -779,6 +799,13 @@ export default function App() {
                   <a href="#estimator" className="block text-sm text-muted-foreground hover:text-foreground">Payment Estimator</a>
                   <a href="#states" className="block text-sm text-muted-foreground hover:text-foreground">State Information</a>
                   <a href="#faqs" className="block text-sm text-muted-foreground hover:text-foreground">FAQs</a>
+                  <button 
+                    onClick={() => setShowSitemap(true)}
+                    className="block text-sm text-muted-foreground hover:text-foreground text-left"
+                    aria-label="View site map page"
+                  >
+                    Site Map
+                  </button>
                   <button 
                     onClick={downloadSitemap}
                     className="block text-sm text-muted-foreground hover:text-foreground text-left"
