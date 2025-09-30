@@ -3,6 +3,67 @@ import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
 import { Separator } from "./components/ui/separator";
 
 export default function App() {
+  // Generate and download XML sitemap
+  const downloadSitemap = () => {
+    const currentDate = new Date().toISOString().split('T')[0];
+    
+    const sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://dscrloandownpayment.com</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dscrloandownpayment.com#quick-answer</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://dscrloandownpayment.com#factors</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://dscrloandownpayment.com#estimator</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://dscrloandownpayment.com#states</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://dscrloandownpayment.com#property-types</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://dscrloandownpayment.com#faqs</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+</urlset>`;
+
+    const blob = new Blob([sitemapContent], { type: 'application/xml' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'sitemap.xml';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <>
       {/* SEO Meta Tags - These would be handled by your meta framework */}
@@ -674,11 +735,14 @@ export default function App() {
               </Card>
             </div>
             
-            <div className="text-center mt-6">
+            <div className="flex flex-col sm:flex-row gap-3 justify-center items-center mt-6">
               <Button asChild variant="outline">
                 <a href="https://www.shopdscrloans.com" rel="noopener" aria-label="Browse all DSCR loan topics">
                   All DSCR topics → shopdscrloans.com
                 </a>
+              </Button>
+              <Button variant="outline" onClick={downloadSitemap} aria-label="Download XML sitemap for SEO">
+                Download Sitemap.xml
               </Button>
             </div>
           </section>
@@ -715,6 +779,13 @@ export default function App() {
                   <a href="#estimator" className="block text-sm text-muted-foreground hover:text-foreground">Payment Estimator</a>
                   <a href="#states" className="block text-sm text-muted-foreground hover:text-foreground">State Information</a>
                   <a href="#faqs" className="block text-sm text-muted-foreground hover:text-foreground">FAQs</a>
+                  <button 
+                    onClick={downloadSitemap}
+                    className="block text-sm text-muted-foreground hover:text-foreground text-left"
+                    aria-label="Download XML sitemap"
+                  >
+                    Download Sitemap
+                  </button>
                 </nav>
               </div>
               

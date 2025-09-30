@@ -612,6 +612,10 @@
     gap: calc(var(--spacing) * 2);
   }
 
+  .gap-3 {
+    gap: calc(var(--spacing) * 3);
+  }
+
   .gap-4 {
     gap: calc(var(--spacing) * 4);
   }
@@ -1044,6 +1048,12 @@
       .supports-\[backdrop-filter\]\:bg-background\/60 {
         background-color: color-mix(in oklab, var(--background) 60%, transparent);
       }
+    }
+  }
+
+  @media (width >= 40rem) {
+    .sm\:flex-row {
+      flex-direction: row;
     }
   }
 
