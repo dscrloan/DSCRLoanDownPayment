@@ -2,10 +2,19 @@ import { Button } from "./components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
 import { Separator } from "./components/ui/separator";
 import { SitemapPage } from "./components/SitemapPage";
-import { useState } from "react";
+import { PureXMLSitemap } from "./components/PureXMLSitemap";
+import { useState, useEffect } from "react";
 
 export default function App() {
   const [showSitemap, setShowSitemap] = useState(false);
+  
+  // Check if we should show XML sitemap
+  useEffect(() => {
+    if (window.location.pathname === '/sitemap.xml') {
+      // Force XML sitemap display
+      document.title = 'XML Sitemap';
+    }
+  }, []);
 
   // Generate and download XML sitemap
   const downloadSitemap = () => {
@@ -67,6 +76,11 @@ export default function App() {
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
   };
+
+  // Show XML sitemap if on /sitemap.xml path
+  if (window.location.pathname === '/sitemap.xml') {
+    return <PureXMLSitemap />;
+  }
 
   // Show sitemap page if requested
   if (showSitemap) {
