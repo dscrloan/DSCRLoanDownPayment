@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
-
-export function SitemapXMLRoute() {
-  useEffect(() => {
-    const currentDate = new Date().toISOString().split('T')[0];
-    
+// PURE XML SITEMAP COMPONENT - No HTML wrapper, Google Search Console compatible
+export function PureSitemapXML() {
+  const currentDate = new Date().toISOString().split('T')[0];
+  
+  // Execute immediately on component load
+  (() => {
     const sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
@@ -56,49 +56,48 @@ export function SitemapXMLRoute() {
   </url>
 </urlset>`;
 
-    // AGGRESSIVE XML-ONLY APPROACH - Completely bypass React HTML wrapper
+    // NUCLEAR OPTION: Complete document replacement with pure XML
     
-    // Clear ALL HTML content
-    document.documentElement.innerHTML = '';
-    
-    // Set XML content type in HTTP headers (if possible)
-    try {
-      // Try to set response headers
-      if (window.Response && window.Response.prototype.headers) {
-        const response = new Response(sitemapContent, {
-          headers: {
-            'Content-Type': 'application/xml; charset=utf-8',
-            'Cache-Control': 'public, max-age=3600'
-          }
-        });
-      }
-    } catch (e) {
-      // Headers not settable in client-side, continue with DOM replacement
+    // Stop React rendering immediately
+    if (typeof window !== 'undefined' && window.stop) {
+      window.stop();
     }
     
-    // Replace entire document with XML
-    document.open('text/xml', 'replace');
+    // Clear everything and write pure XML
+    document.open('application/xml', 'replace');
     document.write(sitemapContent);
     document.close();
     
-    // Override document properties
+    // Override MIME type
     Object.defineProperty(document, 'contentType', {
       value: 'application/xml',
+      configurable: false,
       writable: false
     });
     
-    // Set additional XML metadata
-    document.title = 'XML Sitemap';
-    
-    // Remove any remaining HTML elements
-    const htmlElement = document.documentElement;
-    if (htmlElement) {
-      htmlElement.setAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
-      htmlElement.removeAttribute('lang');
+    // Set XML processing instruction
+    if (document.doctype) {
+      document.removeChild(document.doctype);
     }
     
-  }, []);
-
-  // Return absolutely nothing to prevent React from rendering anything
+    // Remove any React-generated elements
+    const head = document.head;
+    const body = document.body;
+    const scripts = document.querySelectorAll('script');
+    const styles = document.querySelectorAll('style, link[rel="stylesheet"]');
+    
+    if (head) head.remove();
+    if (body) body.remove();
+    scripts.forEach(script => script.remove());
+    styles.forEach(style => style.remove());
+    
+    // Override window location detection
+    if (window.history && window.history.replaceState) {
+      window.history.replaceState(null, 'XML Sitemap', '/sitemap.xml');
+    }
+    
+  })();
+  
+  // Return null to prevent React from rendering
   return null;
 }

@@ -2,7 +2,7 @@ import { Button } from "./components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
 import { Separator } from "./components/ui/separator";
 import { SitemapPage } from "./components/SitemapPage";
-import { SitemapXMLRoute } from "./components/SitemapXMLRoute";
+import { PureSitemapXML } from "./components/PureSitemapXML";
 import { useState, useEffect } from "react";
 
 export default function App() {
@@ -83,9 +83,9 @@ export default function App() {
     URL.revokeObjectURL(url);
   };
 
-  // Handle XML sitemap route
-  if (currentPath === '/sitemap.xml') {
-    return <SitemapXMLRoute />;
+  // Handle XML sitemap route - PURE XML for Google Search Console
+  if (currentPath === '/sitemap.xml' || window.location.pathname === '/sitemap.xml') {
+    return <PureSitemapXML />;
   }
 
   // Show sitemap page if requested
