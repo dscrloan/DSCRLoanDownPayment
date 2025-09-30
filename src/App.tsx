@@ -2,10 +2,25 @@ import { Button } from "./components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
 import { Separator } from "./components/ui/separator";
 import { SitemapPage } from "./components/SitemapPage";
-import { useState } from "react";
+import { SitemapXMLRoute } from "./components/SitemapXMLRoute";
+import { useState, useEffect } from "react";
 
 export default function App() {
   const [showSitemap, setShowSitemap] = useState(false);
+  const [currentPath, setCurrentPath] = useState('');
+
+  useEffect(() => {
+    // Get current path on mount
+    setCurrentPath(window.location.pathname);
+
+    // Listen for navigation changes
+    const handlePopState = () => {
+      setCurrentPath(window.location.pathname);
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   // Generate and download XML sitemap
   const downloadSitemap = () => {
@@ -68,6 +83,11 @@ export default function App() {
     URL.revokeObjectURL(url);
   };
 
+  // Handle XML sitemap route
+  if (currentPath === '/sitemap.xml') {
+    return <SitemapXMLRoute />;
+  }
+
   // Show sitemap page if requested
   if (showSitemap) {
     return <SitemapPage />;
@@ -80,6 +100,7 @@ export default function App() {
         <title>DSCR Loan Down Payment (Typical 20–25%): Factors & Examples</title>
         <meta name="description" content="Understand DSCR loan down payment ranges, factors that change them, and simple examples. See your options and next steps." />
         <link rel="canonical" href="https://dscrloandownpayment.com" />
+        <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="robots" content="index, follow" />
         
@@ -761,6 +782,11 @@ export default function App() {
               <Button variant="outline" onClick={() => setShowSitemap(true)} aria-label="View site map page">
                 View Site Map
               </Button>
+              <Button asChild variant="outline">
+                <a href="/sitemap.xml" target="_blank" rel="noopener" aria-label="View XML sitemap for search engines">
+                  XML Sitemap
+                </a>
+              </Button>
               <Button variant="outline" onClick={downloadSitemap} aria-label="Download XML sitemap for SEO">
                 Download Sitemap.xml
               </Button>
@@ -806,6 +832,15 @@ export default function App() {
                   >
                     Site Map
                   </button>
+                  <a 
+                    href="/sitemap.xml" 
+                    target="_blank"
+                    rel="noopener"
+                    className="block text-sm text-muted-foreground hover:text-foreground"
+                    aria-label="View XML sitemap for search engines"
+                  >
+                    XML Sitemap
+                  </a>
                   <button 
                     onClick={downloadSitemap}
                     className="block text-sm text-muted-foreground hover:text-foreground text-left"
