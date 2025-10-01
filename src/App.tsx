@@ -2,26 +2,17 @@ import { Button } from "./components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
 import { Separator } from "./components/ui/separator";
 import { SitemapPage } from "./components/SitemapPage";
-import { PureXMLSitemap } from "./components/PureXMLSitemap";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function App() {
   const [showSitemap, setShowSitemap] = useState(false);
-  
-  // Check if we should show XML sitemap
-  useEffect(() => {
-    if (window.location.pathname === '/sitemap.xml') {
-      // Force XML sitemap display
-      document.title = 'XML Sitemap';
-    }
-  }, []);
 
   // Generate and download XML sitemap
   const downloadSitemap = () => {
     const currentDate = new Date().toISOString().split('T')[0];
     
     const sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
   <url>
     <loc>https://dscrloandownpayment.com</loc>
     <lastmod>${currentDate}</lastmod>
@@ -32,7 +23,7 @@ export default function App() {
     <loc>https://dscrloandownpayment.com#quick-answer</loc>
     <lastmod>${currentDate}</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://dscrloandownpayment.com#factors</loc>
@@ -47,6 +38,12 @@ export default function App() {
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://dscrloandownpayment.com#faqs</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://dscrloandownpayment.com#states</loc>
     <lastmod>${currentDate}</lastmod>
     <changefreq>monthly</changefreq>
@@ -57,12 +54,6 @@ export default function App() {
     <lastmod>${currentDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://dscrloandownpayment.com#faqs</loc>
-    <lastmod>${currentDate}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
   </url>
 </urlset>`;
 
@@ -76,11 +67,6 @@ export default function App() {
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
   };
-
-  // Show XML sitemap if on /sitemap.xml path
-  if (window.location.pathname === '/sitemap.xml') {
-    return <PureXMLSitemap />;
-  }
 
   // Show sitemap page if requested
   if (showSitemap) {
@@ -777,7 +763,7 @@ export default function App() {
                 View Site Map
               </Button>
               <Button asChild variant="outline">
-                <a href="/sitemap.xml" target="_blank" rel="noopener" aria-label="View XML sitemap for search engines">
+                <a href="/sitemap.xml" rel="noopener" aria-label="View XML sitemap for search engines">
                   XML Sitemap
                 </a>
               </Button>
@@ -827,8 +813,7 @@ export default function App() {
                     Site Map
                   </button>
                   <a 
-                    href="/sitemap.xml" 
-                    target="_blank"
+                    href="/sitemap.xml"
                     rel="noopener"
                     className="block text-sm text-muted-foreground hover:text-foreground"
                     aria-label="View XML sitemap for search engines"
